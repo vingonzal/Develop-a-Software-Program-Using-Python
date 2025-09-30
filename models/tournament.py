@@ -59,7 +59,7 @@ class Tournament:
 
     # This method randomly assign results to all matches in all rounds.
     def complete_tournament(self):
-        # Out loop ensures every round is processed
+        # Outter loop ensures every round is processed
         for round_object in self.rounds:
             # Inner loop targets each individual game
             for match in round_object.matches:
