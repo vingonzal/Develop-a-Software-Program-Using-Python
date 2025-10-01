@@ -28,6 +28,36 @@ def find_player_by_id(players):
             return
     print("Player not found.")
 
+# Load a tournament and display its basic attributes (no rounds or player information)
+def load_tournament(): 
+    with open("data/tournaments/completed.json", "r") as f:
+        data = json.load(f)
+
+    # Parse dates
+    start_date = datetime.strptime(data["dates"]["from"], "%d-%m-%Y").date()
+    end_date = datetime.strptime(data["dates"]["to"], "%d-%m-%Y").date()
+    dates = Dates(start=start_date, end=end_date)
+
+    # Create tournament object
+    tournament = Tournament(
+        name=data["name"],
+        venue=data["venue"],
+        dates=dates,
+        registered_players=data["players"],
+        total_rounds=data["number_of_rounds"]
+    )
+    tournament.completed = data.get("completed", False)
+
+    # Display basic attributes only
+    print(f"Tournament Name: {tournament.name}")
+    print(f"Venue: {tournament.venue}")
+    print(f"Dates: {tournament.dates.start} to {tournament.dates.end}")
+    print(f"Number of Rounds: {tournament.total_rounds}")
+    print(f"Completed: {tournament.completed}")
+
+    return tournament
+
+
 
 
 
