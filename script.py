@@ -2,7 +2,7 @@ import json
 from models.player import Player
 from models.tournament import Tournament
 from models.dates import Dates
-from datetime import date
+from datetime import datetime
 
 # Load players from JSON files
 def load_players():
@@ -31,33 +31,33 @@ def find_player_by_id(players):
 # Load a tournament and display its basic attributes (no rounds or player information)
 def load_tournament(): 
     with open("data/tournaments/completed.json", "r") as f:
-        data = json.load(f)
+        data = json.load(f) #parse content into Python dictionary
 
     # Parse dates
     start_date = datetime.strptime(data["dates"]["from"], "%d-%m-%Y").date()
     end_date = datetime.strptime(data["dates"]["to"], "%d-%m-%Y").date()
-    dates = Dates(start=start_date, end=end_date)
+    dates = Dates(start_date, end_date)
 
     # Create tournament object
     tournament = Tournament(
-        name=data["name"],
-        venue=data["venue"],
-        dates=dates,
-        registered_players=data["players"],
-        total_rounds=data["number_of_rounds"]
+        data["name"],
+        data["venue"],
+        dates,
+        data["players"],
+        data["number_of_rounds"],
     )
     tournament.completed = data.get("completed", False)
 
     # Display basic attributes only
     print(f"Tournament Name: {tournament.name}")
     print(f"Venue: {tournament.venue}")
-    print(f"Dates: {tournament.dates.start} to {tournament.dates.end}")
+    print(f"Dates: {tournament.dates.start_date} to {tournament.dates.end_date}")
     print(f"Number of Rounds: {tournament.total_rounds}")
     print(f"Completed: {tournament.completed}")
 
     return tournament
 
-
+load_tournament()
 
 
 

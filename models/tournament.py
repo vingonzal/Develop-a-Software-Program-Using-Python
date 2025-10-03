@@ -6,7 +6,7 @@ from models.round import Round
 # This class serves as the conductor
 class Tournament:
 
-    def __init__(self, name, venue, dates : Dates, registered_players, total_rounds, current_round):
+    def __init__(self, name, venue, dates : Dates, registered_players, total_rounds):
         self.name = name
         self.venue = venue
         self.dates = dates
