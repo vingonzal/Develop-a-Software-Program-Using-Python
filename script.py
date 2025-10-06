@@ -60,7 +60,7 @@ def load_tournament():
 # Test output
 load_tournament()
 
-def load_completed_tournament()
+def load_completed_tournament():
     with open("data/tournaments/completed.json", "r") as f:
         data = json.load(f) #parse content into Python dictionary
 
@@ -109,6 +109,6 @@ def load_completed_tournament()
     for player_id, score in sorted(scores.items(), key=lambda x: x[1], reverse=True):
         print(f"{player_id}: {score} points")
 
-
+load_completed_tournament()
 
 
