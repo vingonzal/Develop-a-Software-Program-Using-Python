@@ -79,16 +79,19 @@ def load_completed_tournament():
     )
     tournament.completed = data.get("completed", False) # set to False if key is missing
 
-    # Initialize scores
+    # Initialize scores using dictionary comprehension
+    # Each player starts with 0 points before match results are processed
     scores = {player_id: 0 for player_id in data["players"]}
 
     # Rebuild rounds and calculate scores
-    for round_data in data.get("rounds", []):
+    # Outer - Loop through each round
+    for round_data in data.get("rounds", []): # return empty list if "rounds" missing
+        # Inner - Loop through each match
         for match_data in round_data:
             p1, p2 = match_data["players"]
             winner = match_data["winner"]
 
-            if winner is None:
+            if winner is None: #draw
                 scores[p1] += 0.5
                 scores[p2] += 0.5
             else:
@@ -106,6 +109,8 @@ def load_completed_tournament():
 
     # Display final scores
     print("\nFinal Scores:")
+    # Sort the list of key-value pairs by scores - highest to lowest...
+    # ...unpack as player ID and score, and then print each tuple
     for player_id, score in sorted(scores.items(), key=lambda x: x[1], reverse=True):
         print(f"{player_id}: {score} points")
 
