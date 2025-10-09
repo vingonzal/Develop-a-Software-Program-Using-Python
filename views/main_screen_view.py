@@ -4,9 +4,9 @@ class MainScreenView:
     def display_tournament_list(self, tournaments):
         print("\n*** Available Tournaments ***")
         # Lambda use : for each tournament t, extract its dates.start value to use as the sorting key.
-        # Sort in descending order
+        # Sorts in descending order
         sorted_tournaments = sorted(tournaments, key=lambda t: t.dates.start, reverse=True)
-        # Loop through the sorted tournaments and print each one with a number for selection.
+        # Loops through the sorted tournaments and print each one with a number for selection.
         for i, t in enumerate(sorted_tournaments, start=1):
             print(f"{i}. {t.name} ({t.dates.start} to {t.dates.end})")
 

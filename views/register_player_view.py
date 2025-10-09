@@ -22,6 +22,6 @@ class RegisterPlayerView:
     def prompt_player_selection(self):
         return input("Select a player by number to register, or type 'back' to return: ")
 
-    # Confirms that a player has been registered
+    # Confirms that a player has been registered    
     def confirm_registration(self, player):
         print(f"{player.name} has been registered for the tournament.")
