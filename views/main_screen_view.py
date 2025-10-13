@@ -17,3 +17,9 @@ class MainScreenView:
     # Fallback message if no tournaments exist
     def display_no_tournaments_message(self):
         print("No tournaments available. Please create a new one.")
+
+# need entry point, need a wrapping function, need a while loop, have main function manage the traffic between view and controllers
+# bootstrapping
+# display something to user, take simple controller, what calls what in what order
+# views call controllers, they call the models, models give back to controller
+# glue models to views then refactor

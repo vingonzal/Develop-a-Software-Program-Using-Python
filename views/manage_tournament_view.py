@@ -1,4 +1,3 @@
-# Displays details of a selected tournament and offers management options
 
 class ManageTournamentView:
     # Shows name, venue, dates, number of rounds, current round, completion status, and registered players.

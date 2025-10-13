@@ -1,6 +1,7 @@
 import random # required for the shuffle() function
 from models.dates import Dates
 from models.match import Match
+from models.player import Player
 from models.round import Round
 
 # This class serves as the conductor
@@ -15,6 +16,13 @@ class Tournament:
         self.total_rounds = total_rounds
         self.current_round = 0 #index to keep track of active round
         self.completed = False
+        self.scores = {player.chess_id: 0 for player in registered_players}
+
+    # Method to register play dynamically - this will support the register player screen
+    def register_player(self, player):
+        if player not in self.registered_players:
+            self.registered_players.append(player)
+            self.scores[player.chess_id] = 0
 
     # advance to next round
     def advance_round(self):
@@ -25,6 +33,10 @@ class Tournament:
         else:
             # if all rounds are done, mark True so app knows tournament is finished
             self.completed = True
+    
+    # Method to sort scores
+    def get_sorted_scores(self):
+        return sorted(self.scores.items(), key=lambda x: x[1], reverse=True)
 
     # This method builds all rounds and matches...
     # ... looping through the total number of rounds and building them automatically using _create_round().
@@ -65,12 +77,20 @@ class Tournament:
             for match in round_object.matches:
                 # randomly picks a number; stimulates match outcome without needing user input
                 result = random.choice([0, 1, 2])  # 0 = draw, 1 = player 1 wins, 2 = player 2 wins
+                # track and update scores
                 if result == 0:
                     match.record_result(None)  # draw
+                    self.scores[match.player_ids[0]] += 0.5
+                    self.scores[match.player_ids[1]] += 0.5
                 elif result == 1:
                     match.record_result(match.player_ids[0])
+                    self.scores[match.player_ids[0]] += 1
                 elif result == 2:
                     match.record_result(match.player_ids[1])
+                    self.scores[match.player_ids[0]] += 1
         #mark tournament as finished
         self.completed = True
 
+    # Method to check tournament status
+    def is_active(self):
+        return not self.completed
