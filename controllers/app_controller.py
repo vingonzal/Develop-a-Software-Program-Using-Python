@@ -1,5 +1,7 @@
 from views.main_screen_view import MainScreenView
 from views.manage_tournament_view import ManageTournamentView
+from views.register_player_view import RegisterPlayerView
+from views.enter_results_view import EnterResultsView
 from models.tournament import Tournament
 from services.tournament_service import TournamentService
 from services.player_service import PlayerService
@@ -16,8 +18,10 @@ class AppController:
     def __init__(self):
         self.tournament_service = TournamentService()
         self.player_service = PlayerService()
+        self.register_view = RegisterPlayerView()
         self.main_view = MainScreenView()
         self.manage_view = ManageTournamentView()
+        self.results_view = EnterResultsView()
 
     # Checks for active tournaments (starts the main loop)
     def run(self):
@@ -33,11 +37,13 @@ class AppController:
 
     # Displays the main menu and handles tournament selection or creation
     def show_main_screen(self):
+        # Gets all the tournaments
         tournaments = self.tournament_service.get_all_tournaments()
-
+        # If none exist, prompt to create a new one
         if not tournaments:
             self.main_view.display_no_tournaments_message()
             selection = 'new'
+        # Show numbered list
         else:
             self.main_view.display_tournament_list(tournaments)
             selection = self.main_view.prompt_tournament_selection()
@@ -46,11 +52,13 @@ class AppController:
             tournament = self.tournament_service.create_tournament()
             self.manage_tournament(tournament)
         else:
+            # Handles invalid input/error handling
             try:
-                index = int(selection) - 1
-                tournament = tournaments[index]
-                self.manage_tournament(tournament)
+                index = int(selection) - 1 # - 1 due to zero-based indexing
+                tournament = tournaments[index] # retrieve tournament at that index
+                self.manage_tournament(tournament) # pass the tournament to the method
             except (ValueError, IndexError):
+                # If input is invalid integer or index number is out of range
                 print("Invalid selection. Please try again.")
                 self.show_main_screen()
 
@@ -60,5 +68,140 @@ class AppController:
         self.manage_view.display_manage_options()
         choice = self.manage_view.prompt_manage_choice()
 
-        # Placeholder for routing logic
+        if choice == '1':
+            self.register_player_to_tournament(tournament)
+        elif choice == '2':
+            self.enter_match_results(tournament)
+        elif choice == '3':
+            self.advance_round(tournament)
+        elif choice == '4':
+            self.generate_report(tournament)
+        elif choice == '5':
+            return
+        else:
+            print("Invalid choice.")
+
         print(f"You selected option {choice}. Routing not yet implemented.")
+
+    # Handles player registration
+    def register_player_to_tournament(self, tournament):
+        players = self.player_service.get_all_players()
+        self.register_view.display_player_list(players)
+
+        method = self.register_view.prompt_search_method()
+        if method == '1':
+            query = self.register_view.prompt_search_query()
+            player = self.player_service.search_by_chess_id(query)
+            if player:
+                tournament.register_player(player)
+                self.register_view.confirm_registration(player)
+            else:
+                print("Player not found.")
+        elif method == '2':
+            query = self.register_view.prompt_search_query()
+            results = self.player_service.search_by_name(query)
+            self.register_view.display_player_list(results)
+            selection = self.register_view.prompt_player_selection()
+            if selection.lower() == 'back':
+                return
+            try:
+                index = int(selection) - 1
+                player = results[index]
+                tournament.register_player(player)
+                self.register_view.confirm_registration(player)
+            except (ValueError, IndexError):
+                print("Invalid selection.")
+        else:
+            print("Invalid search method.")
+
+    # This allows users to input match outcomes for the current round. 
+    # This will connect the controller to the EnterResultsView, update match results, and adjust player scores.
+    def enter_match_results(self, tournament):
+        if tournament.current_round == 0 or tournament.current_round > len(tournament.rounds):
+            print("No active round to enter results for.")
+            return
+
+        round_obj = tournament.rounds[tournament.current_round - 1]
+        self.results_view.display_current_round_matches(round_obj.matches)
+
+        for match in round_obj.matches:
+            if match.completed:
+                continue
+
+            result = self.results_view.prompt_match_result(match)
+
+            if result == '1':
+                match.record_result(match.player_ids[0])
+                tournament.scores[match.player_ids[0]] += 1
+            elif result == '2':
+                match.record_result(match.player_ids[1])
+                tournament.scores[match.player_ids[1]] += 1
+            elif result == '3':
+                match.record_result(None)
+                tournament.scores[match.player_ids[0]] += 0.5
+                tournament.scores[match.player_ids[1]] += 0.5
+            else:
+                print("Invalid input. Skipping match.")
+                continue
+
+            self.results_view.confirm_result_entry(match)
+    
+    # This will users to move the tournament forward once results are entered.
+    def advance_round(self, tournament):
+        if tournament.completed:
+            print("Tournament is already completed.")
+            return
+        # Starts the first round if none have begun
+        current_round = tournament.current_round
+        if current_round == 0:
+            print("No rounds have started yet. Creating rounds now...")
+            tournament.create_rounds()
+            tournament.advance_round()
+            print(f"Round {tournament.current_round} has started.")
+            return
+        # Prevents advancing if match results are missing
+        round_obj = tournament.rounds[current_round - 1]
+        incomplete_matches = [m for m in round_obj.matches if not m.completed]
+
+        if incomplete_matches:
+            print("Cannot advance. Some matches in the current round are incomplete.")
+            return
+        # Moves to the next round or marks the tournament complete
+        tournament.advance_round()
+        if tournament.completed:
+            print("Tournament is now complete!")
+        else:
+            print(f"Advanced to Round {tournament.current_round}.")
+
+    # This will allow users to view final standings and match history once the tournament is complete.
+    def generate_report(self, tournament):
+        # Shows tournament metadata (name, venue, dates, etc.)
+        print("\n*** Tournament Report ***")
+        print(f"Name: {tournament.name}")
+        print(f"Venue: {tournament.venue}")
+        print(f"Dates: {tournament.dates.start} to {tournament.dates.end}")
+        print(f"Total Rounds: {tournament.total_rounds}")
+        print(f"Status: {'Completed' if tournament.completed else 'In Progress'}\n")
+
+        # Displays final standings sorted by score
+        print("🏆 Final Standings:")
+        sorted_scores = tournament.get_sorted_scores()
+        for rank, (chess_id, score) in enumerate(sorted_scores, start=1):
+            print(f"{rank}. {chess_id} — {score} pts")
+
+        # Lists match results round by round
+        print("\n📋 Match Results:")
+        for round_obj in tournament.rounds:
+            print(f"\nRound {round_obj.round_number}:")
+            for match in round_obj.matches:
+                p1, p2 = match.player_ids
+                result = match.result
+                if result is None:
+                    outcome = "Draw"
+                elif result == p1:
+                    outcome = f"{p1} wins"
+                elif result == p2:
+                    outcome = f"{p2} wins"
+                else:
+                    outcome = "No result"
+                print(f"{p1} vs {p2} → {outcome}")
