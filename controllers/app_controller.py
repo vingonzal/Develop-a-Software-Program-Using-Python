@@ -3,6 +3,7 @@ from views.manage_tournament_view import ManageTournamentView
 from views.register_player_view import RegisterPlayerView
 from views.enter_results_view import EnterResultsView
 from models.tournament import Tournament
+from models.club_manager import ClubManager
 from services.tournament_service import TournamentService
 from services.player_service import PlayerService
 
@@ -17,7 +18,8 @@ class AppController:
     # Initializes services and views
     def __init__(self):
         self.tournament_service = TournamentService()
-        self.player_service = PlayerService()
+        self.club_manager = ClubManager("data/clubs")
+        self.player_service = PlayerService(self.club_manager)
         self.register_view = RegisterPlayerView()
         self.main_view = MainScreenView()
         self.manage_view = ManageTournamentView()

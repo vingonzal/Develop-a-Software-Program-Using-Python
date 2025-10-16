@@ -1,5 +1,9 @@
 from models.tournament import Tournament
 from models.dates import Dates
+import json
+import os
+
+TOURNAMENTS_FILE = "data/tournaments.json"
 
 # TournamentService is a helper class that acts as a data layer between the controller and models
 # This offloads logic from the controller
@@ -13,6 +17,7 @@ class TournamentService:
     # Initialize an in-memory list for now. 
     def __init__(self):
         self.tournaments = [] # This can be replaced with loading from a JSON file
+        self.load_tournaments()
 
     # Returns the full list of tournaments. 
     # Used by controller to display all tournaments on the main screen.
@@ -39,3 +44,17 @@ class TournamentService:
 
         print(f"Tournament '{name}' created successfully.")
         return tournament
+    
+    # This converts each tournament to a dictionary and writes the list to a JSON file.
+    def save_tournaments(self):
+        with open(TOURNAMENTS_FILE, "w") as f:
+            json.dump([t.to_dict() for t in self.tournaments], f, indent=2)
+
+    # This reads the file and reconstructs each tournament using the from_dict() method.
+    def load_tournaments(self):
+        if not os.path.exists(TOURNAMENTS_FILE):
+            return
+
+        with open(TOURNAMENTS_FILE, "r") as f:
+            data = json.load(f)
+            self.tournaments = [Tournament.from_dict(t) for t in data]

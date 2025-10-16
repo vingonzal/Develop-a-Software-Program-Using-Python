@@ -5,7 +5,7 @@ class ManageTournamentView:
         print("\n*** Tournament Details ***")
         print(f"Name: {tournament.name}")
         print(f"Venue: {tournament.venue}")
-        print(f"Dates: {tournament.dates.start} to {tournament.dates.end}")
+        print(f"Dates: {tournament.dates.start_date} to {tournament.dates.end_date}")
         print(f"Rounds: {tournament.total_rounds}")
         print(f"Current Round: {tournament.current_round or 'None'}")
         print(f"Completed: {'Yes' if tournament.completed else 'No'}")

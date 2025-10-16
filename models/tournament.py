@@ -94,3 +94,38 @@ class Tournament:
     # Method to check tournament status
     def is_active(self):
         return not self.completed
+    
+    # This method converts a Tournament object into a plain Python dictionary — ready for JSON serialization
+    # This also prepares a tournament for saving to disk
+    def to_dict(self):
+        return {
+            "name": self.name,
+            "venue": self.venue,
+            "dates": {
+                "start": self.dates.start,
+                "end": self.dates.end
+            },
+            "registered_players": self.registered_players,
+            "total_rounds": self.total_rounds,
+            "current_round": self.current_round,
+            "scores": self.scores,
+            "rounds": [r.to_dict() for r in self.rounds],
+            "completed": self.completed
+        }
+
+    # This reconstructs a Tournament object from a dictionary — typically loaded from a JSON file
+    @classmethod # This decoratorit allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
+    def from_dict(cls, data):
+        dates = Dates(data["dates"]["start"], data["dates"]["end"])
+        tournament = cls(
+            name=data["name"],
+            venue=data["venue"],
+            dates=dates,
+            registered_players=data["registered_players"],
+            total_rounds=data["total_rounds"]
+        )
+        tournament.current_round = data["current_round"]
+        tournament.scores = data["scores"]
+        tournament.rounds = [Round.from_dict(r) for r in data["rounds"]]
+        tournament.completed = data["completed"]
+        return tournament
