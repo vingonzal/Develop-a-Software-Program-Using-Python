@@ -16,13 +16,13 @@ class Tournament:
         self.total_rounds = total_rounds
         self.current_round = 0 #index to keep track of active round
         self.completed = False
-        self.scores = {player.chess_id: 0 for player in registered_players}
+        self.scores = {player.chess_id: 0.0 for player in registered_players}
 
     # Method to register play dynamically - this will support the register player screen
     def register_player(self, player):
         if player not in self.registered_players:
             self.registered_players.append(player)
-            self.scores[player.chess_id] = 0
+            self.scores[player.chess_id] = 0.0
 
     # advance to next round
     def advance_round(self):
@@ -57,7 +57,7 @@ class Tournament:
         for i in range(0, len(players), 2):
             pair = players[i:i+2] #slice out two players at a time from list
             if len(pair) == 2: #avoids creating match with only 1 player
-                match = self._create_match(pair)
+                match = self._create_match([player.chess_id for player in pair])
                 matches.append(match)
         # create new round object and assign current round #
         round_object = Round(round_number)
@@ -125,7 +125,7 @@ class Tournament:
             total_rounds=data["total_rounds"]
         )
         tournament.current_round = data["current_round"]
-        tournament.scores = data["scores"]
+        tournament.scores = {k: float(v) for k, v in data["scores"].items()}
         tournament.rounds = [Round.from_dict(r) for r in data["rounds"]]
         tournament.completed = data["completed"]
         return tournament

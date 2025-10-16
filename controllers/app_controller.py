@@ -66,24 +66,29 @@ class AppController:
 
     # Displays tournament details and options
     def manage_tournament(self, tournament):
-        self.manage_view.display_tournament_details(tournament)
-        self.manage_view.display_manage_options()
-        choice = self.manage_view.prompt_manage_choice()
+        # Allows users to manage the tournament continuously
+        while True:
+            self.manage_view.display_tournament_details(tournament)
+            self.manage_view.display_manage_options()
+            choice = self.manage_view.prompt_manage_choice()
 
-        if choice == '1':
-            self.register_player_to_tournament(tournament)
-        elif choice == '2':
-            self.enter_match_results(tournament)
-        elif choice == '3':
-            self.advance_round(tournament)
-        elif choice == '4':
-            self.generate_report(tournament)
-        elif choice == '5':
-            return
-        else:
-            print("Invalid choice.")
-
-        print(f"You selected option {choice}. Routing not yet implemented.")
+            if choice == '1':
+                self.register_player_to_tournament(tournament)
+                print("Player registration complete.\n")
+            elif choice == '2':
+                self.enter_match_results(tournament)
+                print("Match results updated.\n")
+            elif choice == '3':
+                self.advance_round(tournament)
+                print("Round advanced.\n")
+            elif choice == '4':
+                self.generate_report(tournament)
+                print("Report generated.\n")
+            elif choice == '5':
+                print("Returning to main menu...\n")
+                break
+            else:
+                print("Invalid choice. Please try again.\n")
 
     # Handles player registration
     def register_player_to_tournament(self, tournament):
@@ -145,7 +150,8 @@ class AppController:
             else:
                 print("Invalid input. Skipping match.")
                 continue
-
+            
+            match.completed = True 
             self.results_view.confirm_result_entry(match)
     
     # This will users to move the tournament forward once results are entered.
@@ -181,7 +187,7 @@ class AppController:
         print("\n*** Tournament Report ***")
         print(f"Name: {tournament.name}")
         print(f"Venue: {tournament.venue}")
-        print(f"Dates: {tournament.dates.start} to {tournament.dates.end}")
+        print(f"Dates: {tournament.dates.start_date} to {tournament.dates.end_date}")
         print(f"Total Rounds: {tournament.total_rounds}")
         print(f"Status: {'Completed' if tournament.completed else 'In Progress'}\n")
 
