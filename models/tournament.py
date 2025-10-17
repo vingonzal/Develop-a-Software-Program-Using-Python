@@ -17,6 +17,7 @@ class Tournament:
         self.current_round = 0 #index to keep track of active round
         self.completed = False
         self.scores = {player.chess_id: 0.0 for player in registered_players}
+        
 
     # Method to register play dynamically - this will support the register player screen
     def register_player(self, player):
@@ -102,10 +103,11 @@ class Tournament:
             "name": self.name,
             "venue": self.venue,
             "dates": {
-                "start": self.dates.start,
-                "end": self.dates.end
+                "start": self.dates.start_date,
+                "end": self.dates.end_date
+
             },
-            "registered_players": self.registered_players,
+            "registered_players": [p.to_dict() for p in self.registered_players],
             "total_rounds": self.total_rounds,
             "current_round": self.current_round,
             "scores": self.scores,
@@ -121,7 +123,7 @@ class Tournament:
             name=data["name"],
             venue=data["venue"],
             dates=dates,
-            registered_players=data["registered_players"],
+            registered_players = [Player.from_dict(p) for p in data["registered_players"]],
             total_rounds=data["total_rounds"]
         )
         tournament.current_round = data["current_round"]

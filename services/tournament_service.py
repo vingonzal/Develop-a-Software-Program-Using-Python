@@ -18,6 +18,12 @@ class TournamentService:
     def __init__(self):
         self.tournaments = [] # This can be replaced with loading from a JSON file
         self.load_tournaments()
+        os.makedirs("data", exist_ok=True)
+        # Auto-create the file if missing
+        if not os.path.exists(TOURNAMENTS_FILE):
+            with open(TOURNAMENTS_FILE, "w") as f:
+                f.write("[]")  # Start with an empty list
+
 
     # Returns the full list of tournaments. 
     # Used by controller to display all tournaments on the main screen.
@@ -53,8 +59,15 @@ class TournamentService:
     # This reads the file and reconstructs each tournament using the from_dict() method.
     def load_tournaments(self):
         if not os.path.exists(TOURNAMENTS_FILE):
+            self.tournaments = []
             return
 
         with open(TOURNAMENTS_FILE, "r") as f:
-            data = json.load(f)
+            content = f.read().strip()
+            if not content:
+                print("tournaments.json is empty. Starting with no tournaments.")
+                self.tournaments = []
+                return
+
+            data = json.loads(content)
             self.tournaments = [Tournament.from_dict(t) for t in data]

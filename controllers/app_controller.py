@@ -121,6 +121,9 @@ class AppController:
         else:
             print("Invalid search method.")
 
+        self.tournament_service.save_tournaments()
+
+
     # This allows users to input match outcomes for the current round. 
     # This will connect the controller to the EnterResultsView, update match results, and adjust player scores.
     def enter_match_results(self, tournament):
@@ -153,6 +156,7 @@ class AppController:
             
             match.completed = True 
             self.results_view.confirm_result_entry(match)
+            self.tournament_service.save_tournaments()
     
     # This will users to move the tournament forward once results are entered.
     def advance_round(self, tournament):
@@ -180,6 +184,10 @@ class AppController:
             print("Tournament is now complete!")
         else:
             print(f"Advanced to Round {tournament.current_round}.")
+        
+        tournament.completed = True
+        self.tournament_service.save_tournaments()
+
 
     # This will allow users to view final standings and match history once the tournament is complete.
     def generate_report(self, tournament):

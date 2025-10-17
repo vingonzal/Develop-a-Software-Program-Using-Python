@@ -1,0 +1,68 @@
+[
+  {
+    "name": "test tourny",
+    "venue": "test hall",
+    "dates": {
+      "start": "2000-10-10",
+      "end": "2000-10-11"
+    },
+    "registered_players": [
+      {
+        "chess_id": "OW14240",
+        "name": "Deanna Guerra",
+        "email": "kelseythomas@example.com",
+        "birthday": "13-12-1948"
+      },
+      {
+        "chess_id": "IV51506",
+        "name": "Adrian Ward",
+        "email": "nguyenmichael@example.net",
+        "birthday": "19-08-1939"
+      },
+      {
+        "chess_id": "FQ87503",
+        "name": "Deborah Taylor",
+        "email": "molly81@example.org",
+        "birthday": "23-06-1979"
+      },
+      {
+        "chess_id": "KV43923",
+        "name": "Derrick Cross",
+        "email": "cschwartz@example.net",
+        "birthday": "09-05-1916"
+      }
+    ],
+    "total_rounds": 1,
+    "current_round": 1,
+    "scores": {
+      "OW14240": 1.0,
+      "IV51506": 0.0,
+      "FQ87503": 0.0,
+      "KV43923": 1.0
+    },
+    "rounds": [
+      {
+        "round_number": 1,
+        "matches": [
+          {
+            "player_ids": [
+              "OW14240",
+              "FQ87503"
+            ],
+            "result": "OW14240",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "IV51506",
+              "KV43923"
+            ],
+            "result": "KV43923",
+            "completed": true
+          }
+        ]
+      }
+    ],
+    "completed": false
+  }
+]
