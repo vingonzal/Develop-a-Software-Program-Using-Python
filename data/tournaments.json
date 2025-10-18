@@ -959,5 +959,189 @@
       }
     ],
     "completed": true
+  },
+  {
+    "name": "Test7 Tournament",
+    "venue": "Test7 Hall",
+    "dates": {
+      "start": "2011-01-01",
+      "end": "2011-01-03"
+    },
+    "registered_players": [
+      {
+        "chess_id": "NG39713",
+        "name": "Tim",
+        "email": "t@y.vu",
+        "birthday": "29-08-1957"
+      },
+      {
+        "chess_id": "JW63361",
+        "name": "John Underwood",
+        "email": "shortmelvin@example.net",
+        "birthday": "23-01-1921"
+      },
+      {
+        "chess_id": "QZ98880",
+        "name": "Shawn Key",
+        "email": "zbyrd@example.net",
+        "birthday": "05-08-1916"
+      },
+      {
+        "chess_id": "QQ22510",
+        "name": "Tyler Brown",
+        "email": "watersbob@example.net",
+        "birthday": "07-05-2001"
+      },
+      {
+        "chess_id": "QF01697",
+        "name": "Whitney Hernandez",
+        "email": "rortiz@example.org",
+        "birthday": "10-11-1921"
+      },
+      {
+        "chess_id": "BR95594",
+        "name": "Jeff Boyer",
+        "email": "heatherbowman@example.net",
+        "birthday": "06-01-1930"
+      },
+      {
+        "chess_id": "GN87065",
+        "name": "Paul Miller",
+        "email": "stokessandra@example.net",
+        "birthday": "02-05-1972"
+      },
+      {
+        "chess_id": "LH07588",
+        "name": "Shaun Martinez",
+        "email": "willie67@example.net",
+        "birthday": "04-09-1938"
+      }
+    ],
+    "total_rounds": 3,
+    "current_round": 2,
+    "scores": {
+      "NG39713": 0.0,
+      "JW63361": 1.5,
+      "QZ98880": 1.5,
+      "QQ22510": 0.0,
+      "QF01697": 1.0,
+      "BR95594": 1.0,
+      "GN87065": 2.0,
+      "LH07588": 1.0
+    },
+    "rounds": [
+      {
+        "round_number": 1,
+        "matches": [
+          {
+            "player_ids": [
+              "QZ98880",
+              "QF01697"
+            ],
+            "result": "QZ98880",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "BR95594",
+              "NG39713"
+            ],
+            "result": "BR95594",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "JW63361",
+              "LH07588"
+            ],
+            "result": "JW63361",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "GN87065",
+              "QQ22510"
+            ],
+            "result": "GN87065",
+            "completed": true
+          }
+        ]
+      },
+      {
+        "round_number": 2,
+        "matches": [
+          {
+            "player_ids": [
+              "NG39713",
+              "QF01697"
+            ],
+            "result": "QF01697",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "LH07588",
+              "QQ22510"
+            ],
+            "result": "LH07588",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "JW63361",
+              "QZ98880"
+            ],
+            "result": null,
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "GN87065",
+              "BR95594"
+            ],
+            "result": "GN87065",
+            "completed": true
+          }
+        ]
+      },
+      {
+        "round_number": 3,
+        "matches": [
+          {
+            "player_ids": [
+              "QF01697",
+              "QQ22510"
+            ],
+            "result": null,
+            "completed": false
+          },
+          {
+            "player_ids": [
+              "QZ98880",
+              "LH07588"
+            ],
+            "result": null,
+            "completed": false
+          },
+          {
+            "player_ids": [
+              "NG39713",
+              "JW63361"
+            ],
+            "result": null,
+            "completed": false
+          },
+          {
+            "player_ids": [
+              "GN87065",
+              "BR95594"
+            ],
+            "result": null,
+            "completed": false
+          }
+        ]
+      }
+    ],
+    "completed": true
   }
 ]

@@ -32,9 +32,6 @@ class Tournament:
         if self.current_round < self.total_rounds:
             # if so move to next round
             self.current_round += 1
-        else:
-            # if all rounds are done, mark True so app knows tournament is finished
-            self.completed = True
 
     # Method to sort scores
     def get_sorted_scores(self):
