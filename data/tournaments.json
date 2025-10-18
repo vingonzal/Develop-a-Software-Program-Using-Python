@@ -30,6 +30,36 @@
         "name": "Derrick Cross",
         "email": "cschwartz@example.net",
         "birthday": "09-05-1916"
+      },
+      {
+        "chess_id": "FY61741",
+        "name": "Peter Francis",
+        "email": "christophercarroll@example.com",
+        "birthday": "18-11-1927"
+      },
+      {
+        "chess_id": "OS93227",
+        "name": "Brittany Peterson",
+        "email": "sabrinabrandt@example.net",
+        "birthday": "21-03-1972"
+      },
+      {
+        "chess_id": "VU19801",
+        "name": "Philip Sullivan",
+        "email": "jennifer46@example.com",
+        "birthday": "22-01-1987"
+      },
+      {
+        "chess_id": "RN31708",
+        "name": "Steven Peterson",
+        "email": "christinerussell@example.net",
+        "birthday": "06-07-1944"
+      },
+      {
+        "chess_id": "PB43166",
+        "name": "Rachel Myers",
+        "email": "brian22@example.org",
+        "birthday": "04-12-1924"
       }
     ],
     "total_rounds": 1,
@@ -38,7 +68,12 @@
       "OW14240": 1.0,
       "IV51506": 0.0,
       "FQ87503": 0.0,
-      "KV43923": 1.0
+      "KV43923": 1.0,
+      "FY61741": 0.0,
+      "OS93227": 0.0,
+      "VU19801": 0.0,
+      "RN31708": 0.0,
+      "PB43166": 0.0
     },
     "rounds": [
       {
@@ -63,6 +98,93 @@
         ]
       }
     ],
-    "completed": false
+    "completed": true
+  },
+  {
+    "name": "Test2",
+    "venue": "Test2 hall",
+    "dates": {
+      "start": "2001-01-01",
+      "end": "2001-01-02"
+    },
+    "registered_players": [
+      {
+        "chess_id": "NG39713",
+        "name": "Tim",
+        "email": "t@y.vu",
+        "birthday": "29-08-1957"
+      },
+      {
+        "chess_id": "JW63361",
+        "name": "John Underwood",
+        "email": "shortmelvin@example.net",
+        "birthday": "23-01-1921"
+      },
+      {
+        "chess_id": "QZ98880",
+        "name": "Shawn Key",
+        "email": "zbyrd@example.net",
+        "birthday": "05-08-1916"
+      },
+      {
+        "chess_id": "QQ22510",
+        "name": "Tyler Brown",
+        "email": "watersbob@example.net",
+        "birthday": "07-05-2001"
+      }
+    ],
+    "total_rounds": 2,
+    "current_round": 2,
+    "scores": {
+      "NG39713": 1.0,
+      "JW63361": 1.0,
+      "QZ98880": 1.0,
+      "QQ22510": 1.0
+    },
+    "rounds": [
+      {
+        "round_number": 1,
+        "matches": [
+          {
+            "player_ids": [
+              "QZ98880",
+              "QQ22510"
+            ],
+            "result": "QZ98880",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "NG39713",
+              "JW63361"
+            ],
+            "result": "JW63361",
+            "completed": true
+          }
+        ]
+      },
+      {
+        "round_number": 2,
+        "matches": [
+          {
+            "player_ids": [
+              "NG39713",
+              "QZ98880"
+            ],
+            "result": "NG39713",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "QQ22510",
+              "JW63361"
+            ],
+            "result": "QQ22510",
+            "completed": true
+          }
+        ]
+      }
+    ],
+    "completed": true
   }
 ]

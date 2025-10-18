@@ -92,6 +92,9 @@ class Tournament:
         #mark tournament as finished
         self.completed = True
 
+    def get_rankings(self):
+        return sorted(self.registered_players, key=lambda p: p.score, reverse=True) 
+
     # Method to check tournament status
     def is_active(self):
         return not self.completed
@@ -130,4 +133,4 @@ class Tournament:
         tournament.scores = {k: float(v) for k, v in data["scores"].items()}
         tournament.rounds = [Round.from_dict(r) for r in data["rounds"]]
         tournament.completed = data["completed"]
-        return tournament
+        return tournament 

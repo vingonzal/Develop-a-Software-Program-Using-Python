@@ -36,6 +36,7 @@ class Player:
             other.email,
             other.chess_id,
             other.birthdate,
+            self.score = 0
         )
 
     @property

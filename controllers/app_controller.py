@@ -1,11 +1,11 @@
+from models.club_manager import ClubManager
+from models.tournament import Tournament
+from services.player_service import PlayerService
+from services.tournament_service import TournamentService
+from views.enter_results_view import EnterResultsView
 from views.main_screen_view import MainScreenView
 from views.manage_tournament_view import ManageTournamentView
 from views.register_player_view import RegisterPlayerView
-from views.enter_results_view import EnterResultsView
-from models.tournament import Tournament
-from models.club_manager import ClubManager
-from services.tournament_service import TournamentService
-from services.player_service import PlayerService
 
 """      
 This controller will do the following:
@@ -14,6 +14,8 @@ This controller will do the following:
 - Handle tournament lifecycle: creation → registration → rounds → results → report
 - Coordinate the views: MainScreenView, ManageTournamentView, EnterResultsView, etc.
 """
+
+
 class AppController:
     # Initializes services and views
     def __init__(self):
@@ -44,21 +46,21 @@ class AppController:
         # If none exist, prompt to create a new one
         if not tournaments:
             self.main_view.display_no_tournaments_message()
-            selection = 'new'
+            selection = "new"
         # Show numbered list
         else:
             self.main_view.display_tournament_list(tournaments)
             selection = self.main_view.prompt_tournament_selection()
 
-        if selection.lower() == 'new':
+        if selection.lower() == "new":
             tournament = self.tournament_service.create_tournament()
             self.manage_tournament(tournament)
         else:
             # Handles invalid input/error handling
             try:
-                index = int(selection) - 1 # - 1 due to zero-based indexing
-                tournament = tournaments[index] # retrieve tournament at that index
-                self.manage_tournament(tournament) # pass the tournament to the method
+                index = int(selection) - 1  # - 1 due to zero-based indexing
+                tournament = tournaments[index]  # retrieve tournament at that index
+                self.manage_tournament(tournament)  # pass the tournament to the method
             except (ValueError, IndexError):
                 # If input is invalid integer or index number is out of range
                 print("Invalid selection. Please try again.")
@@ -72,19 +74,19 @@ class AppController:
             self.manage_view.display_manage_options()
             choice = self.manage_view.prompt_manage_choice()
 
-            if choice == '1':
+            if choice == "1":
                 self.register_player_to_tournament(tournament)
                 print("Player registration complete.\n")
-            elif choice == '2':
+            elif choice == "2":
                 self.enter_match_results(tournament)
                 print("Match results updated.\n")
-            elif choice == '3':
+            elif choice == "3":
                 self.advance_round(tournament)
                 print("Round advanced.\n")
-            elif choice == '4':
+            elif choice == "4":
                 self.generate_report(tournament)
                 print("Report generated.\n")
-            elif choice == '5':
+            elif choice == "5":
                 print("Returning to main menu...\n")
                 break
             else:
@@ -96,7 +98,7 @@ class AppController:
         self.register_view.display_player_list(players)
 
         method = self.register_view.prompt_search_method()
-        if method == '1':
+        if method == "1":
             query = self.register_view.prompt_search_query()
             player = self.player_service.search_by_chess_id(query)
             if player:
@@ -104,12 +106,12 @@ class AppController:
                 self.register_view.confirm_registration(player)
             else:
                 print("Player not found.")
-        elif method == '2':
+        elif method == "2":
             query = self.register_view.prompt_search_query()
             results = self.player_service.search_by_name(query)
             self.register_view.display_player_list(results)
             selection = self.register_view.prompt_player_selection()
-            if selection.lower() == 'back':
+            if selection.lower() == "back":
                 return
             try:
                 index = int(selection) - 1
@@ -123,11 +125,12 @@ class AppController:
 
         self.tournament_service.save_tournaments()
 
-
-    # This allows users to input match outcomes for the current round. 
+    # This allows users to input match outcomes for the current round.
     # This will connect the controller to the EnterResultsView, update match results, and adjust player scores.
     def enter_match_results(self, tournament):
-        if tournament.current_round == 0 or tournament.current_round > len(tournament.rounds):
+        if tournament.current_round == 0 or tournament.current_round > len(
+            tournament.rounds
+        ):
             print("No active round to enter results for.")
             return
 
@@ -140,24 +143,33 @@ class AppController:
 
             result = self.results_view.prompt_match_result(match)
 
-            if result == '1':
+            if result == "1":
                 match.record_result(match.player_ids[0])
                 tournament.scores[match.player_ids[0]] += 1
-            elif result == '2':
+            elif result == "2":
                 match.record_result(match.player_ids[1])
                 tournament.scores[match.player_ids[1]] += 1
-            elif result == '3':
+            elif result == "3":
                 match.record_result(None)
                 tournament.scores[match.player_ids[0]] += 0.5
                 tournament.scores[match.player_ids[1]] += 0.5
             else:
                 print("Invalid input. Skipping match.")
                 continue
-            
-            match.completed = True 
+
+            match.completed = True
+            player.score += result  # result = 1 for win, 0.5 for draw, 0 for loss
+            self.display_rankings(tournament)
             self.results_view.confirm_result_entry(match)
             self.tournament_service.save_tournaments()
-    
+
+    # This will display rankings
+    def display_rankings(self, tournament):
+        print("\nCurrent Rankings:")
+        rankings = tournament.get_rankings()
+        for i, player in enumerate(rankings, start=1):
+            print(f"{i}. {player.name} - {player.score} points")
+
     # This will users to move the tournament forward once results are entered.
     def advance_round(self, tournament):
         if tournament.completed:
@@ -184,10 +196,9 @@ class AppController:
             print("Tournament is now complete!")
         else:
             print(f"Advanced to Round {tournament.current_round}.")
-        
+
         tournament.completed = True
         self.tournament_service.save_tournaments()
-
 
     # This will allow users to view final standings and match history once the tournament is complete.
     def generate_report(self, tournament):
