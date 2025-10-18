@@ -163,8 +163,10 @@ class AppController:
         if tournament.current_round == tournament.total_rounds:
             if all(m.completed for m in round_obj.matches):
                 tournament.completed = True
-                print("✅ Tournament is now complete!")
+                print("Tournament is now complete!")
                 self.display_rankings(tournament)
+                self.tournament_service.save_tournaments()
+                return
 
         self.display_rankings(tournament)
         self.tournament_service.save_tournaments()
@@ -197,10 +199,15 @@ class AppController:
             print("Cannot advance. Some matches in the current round are incomplete.")
             return
 
-        tournament.advance_round()
-
-        if tournament.current_round <= tournament.total_rounds:
+        # Only advance if not already in final round
+        if current_round < tournament.total_rounds:
+            tournament.advance_round()
             print(f"Advanced to Round {tournament.current_round}.")
+        else:
+            print(
+                "Final round is already active. Enter results to complete the tournament."
+            )
+
         self.tournament_service.save_tournaments()
 
     # This will allow users to view final standings and match history once the tournament is complete.

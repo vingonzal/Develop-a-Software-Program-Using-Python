@@ -18,6 +18,7 @@ class Player:
         self._birthdate = None
         # And a public one with a getter/setter for the birthday (str)
         self.birthday = birthday
+        self.score = 0
 
     def __str__(self):
         return f"<{self.name}>"
@@ -36,7 +37,6 @@ class Player:
             other.email,
             other.chess_id,
             other.birthdate,
-            self.score = 0
         )
 
     @property
@@ -57,13 +57,13 @@ class Player:
         # datetime is notnatively serializable in JSON
         data["birthday"] = self.birthday
         return data
-    
+
     def to_dict(self):
         return {
             "chess_id": self.chess_id,
             "name": self.name,
             "email": self.email,
-            "birthday": self.birthday
+            "birthday": self.birthday,
         }
 
     @classmethod
@@ -72,5 +72,5 @@ class Player:
             chess_id=data["chess_id"],
             name=data["name"],
             email=data.get("email"),
-            birthday=data.get("birthday")
+            birthday=data.get("birthday"),
         )
