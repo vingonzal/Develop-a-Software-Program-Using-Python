@@ -165,7 +165,7 @@ class AppController:
 
     # This will display rankings
     def display_rankings(self, tournament):
-        print("\nCurrent Rankings:")
+        print("\nFinal Rankings:")
         rankings = tournament.get_rankings()
         for i, player in enumerate(rankings, start=1):
             print(f"{i}. {player.name} - {player.score} points")
@@ -199,6 +199,7 @@ class AppController:
         else:
             print(f"Advanced to Round {tournament.current_round}.")
 
+        self.display_rankings(tournament)
         self.tournament_service.save_tournaments()
 
     # This will allow users to view final standings and match history once the tournament is complete.

@@ -100,6 +100,8 @@ class Tournament:
         self.completed = True
 
     def get_rankings(self):
+        for player in self.registered_players:
+            player.score = self.scores.get(player.chess_id, 0)
         return sorted(self.registered_players, key=lambda p: p.score, reverse=True)
 
     # Method to check tournament status
