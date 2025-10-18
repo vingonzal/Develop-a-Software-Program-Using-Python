@@ -1,37 +1,45 @@
 import json
+from datetime import datetime
+
+from models.dates import Dates
 from models.player import Player
 from models.tournament import Tournament
-from models.dates import Dates
-from datetime import datetime
+
 
 # Load players from JSON files
 def load_players():
-    player_files = ["data/clubs/cornville.json","data/clubs/springfield.json"]
+    player_files = ["data/clubs/cornville.json", "data/clubs/springfield.json"]
     # List to store combined player objects
     all_players = []
     # Loop through each JSON file containing the club-specific players
     for file_path in player_files:
         with open(file_path, "r") as f:
-            data = json.load(f) # read JSON structure
-            player_dicts = data.get("players", []) # extract the players list under the "players" key
+            data = json.load(f)  # read JSON structure
+            player_dicts = data.get(
+                "players", []
+            )  # extract the players list under the "players" key
             # convert each dictionary into a Player object and add to all_players list
             all_players.extend([Player(**player) for player in player_dicts])
 
     return all_players
+
 
 # Ask for Chess ID and display player info
 def find_player_by_id(players):
     chess_id = input("Enter Chess ID: ")
     for player in players:
         if player.chess_id == chess_id:
-            print(f"Name: {player.name}, Email: {player.email}, Birthday: {player.birthday}")
+            print(
+                f"Name: {player.name}, Email: {player.email}, Birthday: {player.birthday}"
+            )
             return
     print("Player not found.")
 
+
 # Load a tournament and display its basic attributes (no rounds or player information)
-def load_tournament(): 
+def load_tournament():
     with open("data/tournaments/completed.json", "r") as f:
-        data = json.load(f) #parse content into Python dictionary
+        data = json.load(f)  # parse content into Python dictionary
 
     # Parse dates
     start_date = datetime.strptime(data["dates"]["from"], "%d-%m-%Y").date()
@@ -46,7 +54,9 @@ def load_tournament():
         data["players"],
         data["number_of_rounds"],
     )
-    tournament.completed = data.get("completed", False) # set to False if key is missing
+    tournament.completed = data.get(
+        "completed", False
+    )  # set to False if key is missing
 
     # Display basic attributes only
     print(f"Tournament Name: {tournament.name}")
@@ -57,12 +67,15 @@ def load_tournament():
     print(f"Completed: {tournament.completed}")
 
     return tournament
+
+
 # Test output
 load_tournament()
 
+
 def load_completed_tournament():
     with open("data/tournaments/completed.json", "r") as f:
-        data = json.load(f) #parse content into Python dictionary
+        data = json.load(f)  # parse content into Python dictionary
 
     # Parse dates
     start_date = datetime.strptime(data["dates"]["from"], "%d-%m-%Y").date()
@@ -77,7 +90,9 @@ def load_completed_tournament():
         data["players"],
         data["number_of_rounds"],
     )
-    tournament.completed = data.get("completed", False) # set to False if key is missing
+    tournament.completed = data.get(
+        "completed", False
+    )  # set to False if key is missing
 
     # Initialize scores using dictionary comprehension
     # Each player starts with 0 points before match results are processed
@@ -85,13 +100,13 @@ def load_completed_tournament():
 
     # Rebuild rounds and calculate scores
     # Outer - Loop through each round
-    for round_data in data.get("rounds", []): # return empty list if "rounds" missing
+    for round_data in data.get("rounds", []):  # return empty list if "rounds" missing
         # Inner - Loop through each match
         for match_data in round_data:
             p1, p2 = match_data["players"]
             winner = match_data["winner"]
 
-            if winner is None: #draw
+            if winner is None:  # draw
                 scores[p1] += 0.5
                 scores[p2] += 0.5
             else:
@@ -114,6 +129,5 @@ def load_completed_tournament():
     for player_id, score in sorted(scores.items(), key=lambda x: x[1], reverse=True):
         print(f"{player_id}: {score} points")
 
+
 load_completed_tournament()
-
-

@@ -1,7 +1,8 @@
-from models.tournament import Tournament
-from models.dates import Dates
 import json
 import os
+
+from models.dates import Dates
+from models.tournament import Tournament
 
 TOURNAMENTS_FILE = "data/tournaments.json"
 
@@ -13,10 +14,12 @@ This service:
 - Filters for active tournaments (not completed)
 - Prompts the user to create a new tournament and returns it to the controller
 """
+
+
 class TournamentService:
-    # Initialize an in-memory list for now. 
+    # Initialize an in-memory list for now.
     def __init__(self):
-        self.tournaments = [] # This can be replaced with loading from a JSON file
+        self.tournaments = []  # This can be replaced with loading from a JSON file
         self.load_tournaments()
         os.makedirs("data", exist_ok=True)
         # Auto-create the file if missing
@@ -24,8 +27,7 @@ class TournamentService:
             with open(TOURNAMENTS_FILE, "w") as f:
                 f.write("[]")  # Start with an empty list
 
-
-    # Returns the full list of tournaments. 
+    # Returns the full list of tournaments.
     # Used by controller to display all tournaments on the main screen.
     def get_all_tournaments(self):
         return self.tournaments
@@ -45,12 +47,14 @@ class TournamentService:
         total_rounds = int(input("Number of rounds: "))
         # Create a date object and tournament instance
         dates = Dates(start, end)
-        tournament = Tournament(name, venue, dates, registered_players=[], total_rounds=total_rounds)
+        tournament = Tournament(
+            name, venue, dates, registered_players=[], total_rounds=total_rounds
+        )
         self.tournaments.append(tournament)
 
         print(f"Tournament '{name}' created successfully.")
         return tournament
-    
+
     # This converts each tournament to a dictionary and writes the list to a JSON file.
     def save_tournaments(self):
         with open(TOURNAMENTS_FILE, "w") as f:

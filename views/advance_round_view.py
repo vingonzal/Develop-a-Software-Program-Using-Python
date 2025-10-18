@@ -1,5 +1,6 @@
 # Handles the confirmation and progression to the next round.
 
+
 class AdvanceRoundView:
     # Asks the user to confirm advancing to the next round.
     def prompt_confirmation(self):

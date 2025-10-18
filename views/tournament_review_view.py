@@ -1,5 +1,6 @@
 # Display a summary report of the tournament
 
+
 class TournamentReportView:
     # Displays full report
     def display_report(self, tournament, scores):
@@ -9,7 +10,9 @@ class TournamentReportView:
         print("\nPlayers by Score:")
         # Sorts the dictionary of scores by the score value (not the player ID)
         # For each (player_id, score) tuple x, return the score (x[1]) to use as the sorting key
-        for player_id, score in sorted(scores.items(), key=lambda x: x[1], reverse=True):
+        for player_id, score in sorted(
+            scores.items(), key=lambda x: x[1], reverse=True
+        ):
             print(f"{player_id}: {score} points")
 
         print("\nRounds and Matches:")

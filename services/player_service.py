@@ -1,10 +1,10 @@
-# PlayerService supports player registration, search, and retrieval across clubs. 
+# PlayerService supports player registration, search, and retrieval across clubs.
 # This service will be used by the controller when registering players to a tournament.
 class PlayerService:
     def __init__(self, club_manager):
         self.club_manager = club_manager
 
-    #Returns all players across all clubs
+    # Returns all players across all clubs
     def get_all_players(self):
         players = []
         for club in self.club_manager.clubs:
@@ -22,6 +22,7 @@ class PlayerService:
     def search_by_name(self, name_fragment):
         name_fragment = name_fragment.lower()
         return [
-            player for player in self.get_all_players()
+            player
+            for player in self.get_all_players()
             if name_fragment in player.name.lower()
         ]

@@ -1,23 +1,24 @@
-import random # required for the shuffle() function
+import random  # required for the shuffle() function
+
 from models.dates import Dates
 from models.match import Match
 from models.player import Player
 from models.round import Round
 
+
 # This class serves as the conductor
 class Tournament:
 
-    def __init__(self, name, venue, dates : Dates, registered_players, total_rounds):
+    def __init__(self, name, venue, dates: Dates, registered_players, total_rounds):
         self.name = name
         self.venue = venue
         self.dates = dates
-        self.registered_players = registered_players 
-        self.rounds = [] # list of Round objects that contain matches
+        self.registered_players = registered_players
+        self.rounds = []  # list of Round objects that contain matches
         self.total_rounds = total_rounds
-        self.current_round = 0 #index to keep track of active round
+        self.current_round = 0  # index to keep track of active round
         self.completed = False
         self.scores = {player.chess_id: 0.0 for player in registered_players}
-        
 
     # Method to register play dynamically - this will support the register player screen
     def register_player(self, player):
@@ -34,7 +35,7 @@ class Tournament:
         else:
             # if all rounds are done, mark True so app knows tournament is finished
             self.completed = True
-    
+
     # Method to sort scores
     def get_sorted_scores(self):
         return sorted(self.scores.items(), key=lambda x: x[1], reverse=True)
@@ -42,7 +43,9 @@ class Tournament:
     # This method builds all rounds and matches...
     # ... looping through the total number of rounds and building them automatically using _create_round().
     def create_rounds(self):
-        for round_number in range(1, self.total_rounds + 1): # start at 1 and include round 4
+        for round_number in range(
+            1, self.total_rounds + 1
+        ):  # start at 1 and include round 4
             round_object = self._create_round(round_number)
             self.rounds.append(round_object)
 
@@ -52,20 +55,22 @@ class Tournament:
         # - Make a copy of the list of registered player IDs,
         # ...so the list can be shuffled without affecting the original order stored in the tournament.
         players = self.registered_players.copy()
-        random.shuffle(players) # Randomize the order of players
-        matches = [] # Initialize an empty list to hold the match objects for this round.
+        random.shuffle(players)  # Randomize the order of players
+        matches = (
+            []
+        )  # Initialize an empty list to hold the match objects for this round.
         # Loop through the shuffled player list two at a time
         for i in range(0, len(players), 2):
-            pair = players[i:i+2] #slice out two players at a time from list
-            if len(pair) == 2: #avoids creating match with only 1 player
+            pair = players[i : i + 2]  # slice out two players at a time from list
+            if len(pair) == 2:  # avoids creating match with only 1 player
                 match = self._create_match([player.chess_id for player in pair])
                 matches.append(match)
         # create new round object and assign current round #
         round_object = Round(round_number)
         for match in matches:
-            round_object.add_match(match) #adds each match to the round
-        return round_object #fully constructed round
-    
+            round_object.add_match(match)  # adds each match to the round
+        return round_object  # fully constructed round
+
     # This private method creates a match between two players.
     def _create_match(self, player_ids):
         return Match(player_ids)
@@ -77,7 +82,9 @@ class Tournament:
             # Inner loop targets each individual game
             for match in round_object.matches:
                 # randomly picks a number; stimulates match outcome without needing user input
-                result = random.choice([0, 1, 2])  # 0 = draw, 1 = player 1 wins, 2 = player 2 wins
+                result = random.choice(
+                    [0, 1, 2]
+                )  # 0 = draw, 1 = player 1 wins, 2 = player 2 wins
                 # track and update scores
                 if result == 0:
                     match.record_result(None)  # draw
@@ -89,48 +96,46 @@ class Tournament:
                 elif result == 2:
                     match.record_result(match.player_ids[1])
                     self.scores[match.player_ids[0]] += 1
-        #mark tournament as finished
+        # mark tournament as finished
         self.completed = True
 
     def get_rankings(self):
-        return sorted(self.registered_players, key=lambda p: p.score, reverse=True) 
+        return sorted(self.registered_players, key=lambda p: p.score, reverse=True)
 
     # Method to check tournament status
     def is_active(self):
         return not self.completed
-    
+
     # This method converts a Tournament object into a plain Python dictionary — ready for JSON serialization
     # This also prepares a tournament for saving to disk
     def to_dict(self):
         return {
             "name": self.name,
             "venue": self.venue,
-            "dates": {
-                "start": self.dates.start_date,
-                "end": self.dates.end_date
-
-            },
+            "dates": {"start": self.dates.start_date, "end": self.dates.end_date},
             "registered_players": [p.to_dict() for p in self.registered_players],
             "total_rounds": self.total_rounds,
             "current_round": self.current_round,
             "scores": self.scores,
             "rounds": [r.to_dict() for r in self.rounds],
-            "completed": self.completed
+            "completed": self.completed,
         }
 
     # This reconstructs a Tournament object from a dictionary — typically loaded from a JSON file
-    @classmethod # This decoratorit allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
+    @classmethod  # This decoratorit allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
     def from_dict(cls, data):
         dates = Dates(data["dates"]["start"], data["dates"]["end"])
         tournament = cls(
             name=data["name"],
             venue=data["venue"],
             dates=dates,
-            registered_players = [Player.from_dict(p) for p in data["registered_players"]],
-            total_rounds=data["total_rounds"]
+            registered_players=[
+                Player.from_dict(p) for p in data["registered_players"]
+            ],
+            total_rounds=data["total_rounds"],
         )
         tournament.current_round = data["current_round"]
         tournament.scores = {k: float(v) for k, v in data["scores"].items()}
         tournament.rounds = [Round.from_dict(r) for r in data["rounds"]]
         tournament.completed = data["completed"]
-        return tournament 
+        return tournament

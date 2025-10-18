@@ -1,4 +1,3 @@
-
 class ManageTournamentView:
     # Shows name, venue, dates, number of rounds, current round, completion status, and registered players.
     def display_tournament_details(self, tournament):

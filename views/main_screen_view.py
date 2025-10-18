@@ -1,11 +1,14 @@
 # Handles the entry point of the app. Displays available tournaments and lets the user choose one or create a new one.
 
+
 class MainScreenView:
     def display_tournament_list(self, tournaments):
         print("\n*** Available Tournaments ***")
         # Lambda use : for each tournament t, extract its dates.start value to use as the sorting key.
         # Sorts in descending order
-        sorted_tournaments = sorted(tournaments, key=lambda t: t.dates.start_date, reverse=True)
+        sorted_tournaments = sorted(
+            tournaments, key=lambda t: t.dates.start_date, reverse=True
+        )
         # Loops through the sorted tournaments and print each one with a number for selection.
         for i, t in enumerate(sorted_tournaments, start=1):
             print(f"{i}. {t.name} ({t.dates.start_date} to {t.dates.end_date})")
@@ -17,5 +20,3 @@ class MainScreenView:
     # Fallback message if no tournaments exist
     def display_no_tournaments_message(self):
         print("No tournaments available. Please create a new one.")
-
-

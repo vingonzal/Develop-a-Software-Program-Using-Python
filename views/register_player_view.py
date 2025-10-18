@@ -1,5 +1,6 @@
 # Allows the user to search for and register players to the tournament.
 
+
 class RegisterPlayerView:
     # Shows all available players with their name and chess ID.
     def display_player_list(self, players):
@@ -20,8 +21,10 @@ class RegisterPlayerView:
 
     # Lets the user pick a player to register or go back.
     def prompt_player_selection(self):
-        return input("Select a player by number to register, or type 'back' to return: ")
+        return input(
+            "Select a player by number to register, or type 'back' to return: "
+        )
 
-    # Confirms that a player has been registered    
+    # Confirms that a player has been registered
     def confirm_registration(self, player):
         print(f"{player.name} has been registered for the tournament.")

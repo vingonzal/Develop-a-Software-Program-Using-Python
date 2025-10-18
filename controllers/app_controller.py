@@ -158,10 +158,10 @@ class AppController:
                 continue
 
             match.completed = True
-            player.score += result  # result = 1 for win, 0.5 for draw, 0 for loss
-            self.display_rankings(tournament)
             self.results_view.confirm_result_entry(match)
-            self.tournament_service.save_tournaments()
+
+        self.display_rankings(tournament)
+        self.tournament_service.save_tournaments()
 
     # This will display rankings
     def display_rankings(self, tournament):
@@ -192,12 +192,13 @@ class AppController:
             return
         # Moves to the next round or marks the tournament complete
         tournament.advance_round()
-        if tournament.completed:
+
+        if tournament.current_round >= tournament.total_rounds:
+            tournament.completed = True
             print("Tournament is now complete!")
         else:
             print(f"Advanced to Round {tournament.current_round}.")
 
-        tournament.completed = True
         self.tournament_service.save_tournaments()
 
     # This will allow users to view final standings and match history once the tournament is complete.
