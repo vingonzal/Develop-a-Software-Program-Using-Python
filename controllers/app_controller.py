@@ -7,7 +7,9 @@ from views.main_screen_view import MainScreenView
 from views.manage_tournament_view import ManageTournamentView
 from views.register_player_view import RegisterPlayerView
 
-"""      
+# This is the controller
+
+"""
 This controller will do the following:
 - Create and manage Tournament instances
 - Route user input to the correct view and model methods
@@ -53,8 +55,9 @@ class AppController:
             selection = self.main_view.prompt_tournament_selection()
 
         if selection.lower() == "new":
+            # Create new tournament object
             tournament = self.tournament_service.create_tournament()
-            self.manage_tournament(tournament)
+            self.manage_tournament(tournament) # being interaction
         else:
             # Handles invalid input/error handling
             try:
@@ -92,7 +95,7 @@ class AppController:
             else:
                 print("Invalid choice. Please try again.\n")
 
-    # Handles player registration
+    # Handles player search and registration
     def register_player_to_tournament(self, tournament):
         players = self.player_service.get_all_players()
         self.register_view.display_player_list(players)

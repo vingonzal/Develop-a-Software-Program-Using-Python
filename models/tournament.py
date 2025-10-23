@@ -18,9 +18,9 @@ class Tournament:
         self.total_rounds = total_rounds
         self.current_round = 0  # index to keep track of active round
         self.completed = False
-        self.scores = {player.chess_id: 0.0 for player in registered_players}
+        self.scores = {player.chess_id: 0.0 for player in registered_players} 
 
-    # Method to register play dynamically - this will support the register player screen
+    # Method to register play dynamically - this will support the register player view
     def register_player(self, player):
         if player not in self.registered_players:
             self.registered_players.append(player)
@@ -121,7 +121,7 @@ class Tournament:
         }
 
     # This reconstructs a Tournament object from a dictionary — typically loaded from a JSON file
-    @classmethod  # This decoratorit allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
+    @classmethod  # This decorator allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
     def from_dict(cls, data):
         dates = Dates(data["dates"]["start"], data["dates"]["end"])
         tournament = cls(
