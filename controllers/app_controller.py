@@ -29,6 +29,18 @@ class AppController:
         self.manage_view = ManageTournamentView()
         self.results_view = EnterResultsView()
 
+    # This function is a helper method that wraps any action that modifies tournament data.
+    # This will perform the update and save the data to the tournament JSON file
+    """
+    This ensures that every change —
+    like registering a player, recording a match result, or advancing a round —
+    is saved instantly, keeping in-memory data and JSON files in sync.
+    """
+
+    def safe_update(self, update_fn, *args, **kwargs):
+        update_fn(*args, **kwargs)
+        self.tournament_service.save_tournaments()
+
     # Checks for active tournaments (starts the main loop)
     def run(self):
         while True:
@@ -57,7 +69,7 @@ class AppController:
         if selection.lower() == "new":
             # Create new tournament object
             tournament = self.tournament_service.create_tournament()
-            self.manage_tournament(tournament) # being interaction
+            self.manage_tournament(tournament)  # being interaction
         else:
             # Handles invalid input/error handling
             try:
