@@ -170,19 +170,17 @@ class AppController:
                 print("Invalid input. Skipping match.")
                 continue
 
-            match.completed = True
+            self.save_and_update(setattr, match, "completed", True)
             self.results_view.confirm_result_entry(match)
 
         if tournament.current_round == tournament.total_rounds:
             if all(m.completed for m in round_obj.matches):
-                tournament.completed = True
+                self.save_and_update(setattr, tournament, "completed", True)
                 print("Tournament is now complete!")
                 self.display_rankings(tournament)
-                self.tournament_service.save_tournaments()
                 return
 
         self.display_rankings(tournament)
-        self.tournament_service.save_tournaments()
 
     # This will display rankings
     def display_rankings(self, tournament):
@@ -201,10 +199,9 @@ class AppController:
 
         if current_round == 0:
             print("No rounds have started yet. Creating rounds now...")
-            tournament.create_rounds()
-            tournament.advance_round()
+            self.save_and_update(tournament.create_rounds)
+            self.save_and_update(tournament.advance_round)
             print(f"Round {tournament.current_round} has started.")
-            self.tournament_service.save_tournaments()
             return
 
         round_obj = tournament.rounds[current_round - 1]
@@ -214,7 +211,7 @@ class AppController:
 
         # Only advance if not already in final round
         if current_round < tournament.total_rounds:
-            tournament.advance_round()
+            self.save_and_update(tournament.advance_round)
             print(f"Advanced to Round {tournament.current_round}.")
         else:
             print(
