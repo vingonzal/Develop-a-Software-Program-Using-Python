@@ -37,8 +37,8 @@ class AppController:
     is saved instantly, keeping in-memory data and JSON files in sync.
     """
 
-    def safe_update(self, update_fn, *args, **kwargs):
-        update_fn(*args, **kwargs)
+    def save_and_update(self, update_function, *args, **kwargs):
+        update_function(*args, **kwargs)
         self.tournament_service.save_tournaments()
 
     # Checks for active tournaments (starts the main loop)
@@ -117,7 +117,7 @@ class AppController:
             query = self.register_view.prompt_search_query()
             player = self.player_service.search_by_chess_id(query)
             if player:
-                tournament.register_player(player)
+                self.save_and_update(tournament.register_player, player)
                 self.register_view.confirm_registration(player)
             else:
                 print("Player not found.")
@@ -131,14 +131,12 @@ class AppController:
             try:
                 index = int(selection) - 1
                 player = results[index]
-                tournament.register_player(player)
+                self.save_and_update(tournament.register_player, player)
                 self.register_view.confirm_registration(player)
             except (ValueError, IndexError):
                 print("Invalid selection.")
         else:
             print("Invalid search method.")
-
-        self.tournament_service.save_tournaments()
 
     # This allows users to input match outcomes for the current round.
     # This will connect the controller to the EnterResultsView, update match results, and adjust player scores.
@@ -159,13 +157,13 @@ class AppController:
             result = self.results_view.prompt_match_result(match)
 
             if result == "1":
-                match.record_result(match.player_ids[0])
+                self.save_and_update(match.record_result, match.player_ids[0])
                 tournament.scores[match.player_ids[0]] += 1
             elif result == "2":
-                match.record_result(match.player_ids[1])
+                self.save_and_update(match.record_result, match.player_ids[1])
                 tournament.scores[match.player_ids[1]] += 1
             elif result == "3":
-                match.record_result(None)
+                self.save_and_update(match.record_result, None)
                 tournament.scores[match.player_ids[0]] += 0.5
                 tournament.scores[match.player_ids[1]] += 0.5
             else:
