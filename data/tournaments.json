@@ -1966,5 +1966,92 @@
       }
     ],
     "completed": true
+  },
+  {
+    "name": "TestSAVE Tournament",
+    "venue": "TestSAVE Hall",
+    "dates": {
+      "start": "2023-10-01",
+      "end": "2023-10-03"
+    },
+    "registered_players": [
+      {
+        "chess_id": "NG39713",
+        "name": "Tim",
+        "email": "t@y.vu",
+        "birthday": "29-08-1957"
+      },
+      {
+        "chess_id": "JW63361",
+        "name": "John Underwood",
+        "email": "shortmelvin@example.net",
+        "birthday": "23-01-1921"
+      },
+      {
+        "chess_id": "QZ98880",
+        "name": "Shawn Key",
+        "email": "zbyrd@example.net",
+        "birthday": "05-08-1916"
+      },
+      {
+        "chess_id": "QQ22510",
+        "name": "Tyler Brown",
+        "email": "watersbob@example.net",
+        "birthday": "07-05-2001"
+      }
+    ],
+    "total_rounds": 2,
+    "current_round": 2,
+    "scores": {
+      "NG39713": 1.0,
+      "JW63361": 1.0,
+      "QZ98880": 2.0,
+      "QQ22510": 0.0
+    },
+    "rounds": [
+      {
+        "round_number": 1,
+        "matches": [
+          {
+            "player_ids": [
+              "QZ98880",
+              "QQ22510"
+            ],
+            "result": "QZ98880",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "JW63361",
+              "NG39713"
+            ],
+            "result": "JW63361",
+            "completed": true
+          }
+        ]
+      },
+      {
+        "round_number": 2,
+        "matches": [
+          {
+            "player_ids": [
+              "NG39713",
+              "QQ22510"
+            ],
+            "result": "NG39713",
+            "completed": true
+          },
+          {
+            "player_ids": [
+              "JW63361",
+              "QZ98880"
+            ],
+            "result": "QZ98880",
+            "completed": true
+          }
+        ]
+      }
+    ],
+    "completed": true
   }
 ]
