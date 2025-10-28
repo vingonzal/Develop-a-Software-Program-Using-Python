@@ -18,7 +18,7 @@ class Tournament:
         self.total_rounds = total_rounds
         self.current_round = 0  # index to keep track of active round
         self.completed = False
-        self.scores = {player.chess_id: 0.0 for player in registered_players} 
+        self.scores = {player.chess_id: 0.0 for player in registered_players}
 
     # Method to register play dynamically - this will support the register player view
     def register_player(self, player):
@@ -58,7 +58,7 @@ class Tournament:
         )  # Initialize an empty list to hold the match objects for this round.
         # Loop through the shuffled player list two at a time
         for i in range(0, len(players), 2):
-            pair = players[i : i + 2]  # slice out two players at a time from list
+            pair = players[i: i + 2]  # slice out two players at a time from list
             if len(pair) == 2:  # avoids creating match with only 1 player
                 match = self._create_match([player.chess_id for player in pair])
                 matches.append(match)
