@@ -1,33 +1,84 @@
-# Starter code - OpenClassrooms WPS | P3
+# Chess Tournament Manager - OpenClassrooms WPS | P3
 
-This repository contains the work that has been done so far on the chess tournament program.
+This repository contains the completed offline tournament management application developed for Cornville, Springfield, and other regional clubs. The program is designed to run without internet access, making it ideal for venues with limited connectivity.
 
-### Data files
+### Features
 
-There are data files provided:
-- JSON files for the chess clubs of Springfield and Cornville
-- JSON files for two tournaments: one completed, and one in progress
+- Offline tournament management from start to finish
+- Player registration and club management
+- Round creation, match result entry, and automatic score updates
+- Real-time player rankings and final standings
+- Tournament reports with match history and final scores
+- JSON-based data persistence with autosave after every change
+- Clean, maintainable code following PEP 8 standards
 
-### Models
 
-This package contains the models already defined by the application:
-* `Player` is a class that represents a chess player
-* `Club` is a class that represents a chess club (including `Player`s)
-* `ClubManager` is a manager class that allows to manage all clubs (and create new ones)
+### Project Structure
 
-### Screens
+| Folder       | Purpose                                                                  |
+| -------------| -------------------------------------------------------------------------|
+| Models/      | Core data classes: Player, Club, Tournament, Round, Match                |
+| Views/       | CLI views for user interaction and prompts                               |
+| Services/    | Business logic and data persistence (e.g. saving/loading tournaments)    |
+| data/        | Sample JSON files for clubs and tournaments                              |
+| controllers/ | Main application logic and flow control                                  |
+| .flake8      | Configuration for linting rules                                          |
 
-This package contains classes that are used by the application to display information from the models on the screen.
-Each screen returns a Command instance (= the action to be carried out).
 
-### Commands
+### Installation & Setup
 
-This package contains "commands" - instances of classes that are used to perform operations from the program.
-Commands follow a *template pattern*. They **must** define the `execute` method.
-When executed, a command returns a context.
+1. Clone the repository
 
-### Main application
+https://github.com/OpenClassrooms-Student-Center/P3-Application-Developer-Skills-Bootcamp.git
 
-The main application is controlled by `manage_clubs.py`. Based on the current Context instance, it instantiates the screens and runs them. The command returned by the screen is then executed to obtain the next context.
+2. 	Create a virtual environment
 
-The main application is an infinite loop and stops when a context has the attribute `run` set to False.
+python -m venv .env
+
+3. 	Activate the environment
+
+- On Windows: .env\Scripts\activate
+- On macOS/Linux: source .env/bin/activate
+
+4. Install dependencies
+
+pip install -r requirements.txt
+
+### How to Use the Program
+
+1. Run the main tournament file (this will run the controller)
+
+python manage_tournaments.py
+
+2. 	Follow the CLI prompts
+
+- Select or create a tournament
+- Register players from existing clubs
+- Advance the round to start the first round
+- Enter match results round by round
+- View rankings and generate reports
+
+3. 	Data is saved automatically
+
+- Every change (player registration, match result, round advancement) is saved immediately to JSON files
+
+### Code Quality & flake8 Report
+
+This project uses flake8 and black to enforce clean code.
+
+To generate a new flake8 HTML report:
+
+1. Install flake8-html
+
+pip install flake8-html
+
+2. Run flake8 with HTML output
+
+flake8 --format=html --htmldir=flake8-report
+
+3. View the report
+
+- Open flake8-report/index.html in your browser
+- This shows all linting issues and file-by-file breakdown
+
+
