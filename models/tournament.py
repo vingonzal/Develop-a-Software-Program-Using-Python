@@ -58,7 +58,7 @@ class Tournament:
         )  # Initialize an empty list to hold the match objects for this round.
         # Loop through the shuffled player list two at a time
         for i in range(0, len(players), 2):
-            pair = players[i: i + 2]  # slice out two players at a time from list
+            pair = players[i : i + 2]  # slice out two players at a time from list
             if len(pair) == 2:  # avoids creating match with only 1 player
                 match = self._create_match([player.chess_id for player in pair])
                 matches.append(match)
@@ -120,8 +120,10 @@ class Tournament:
             "completed": self.completed,
         }
 
-    # This reconstructs a Tournament object from a dictionary — typically loaded from a JSON file
-    @classmethod  # This decorator allows the method to create a new instance of the class using the class itself (cls) rather than a hardcoded class name.
+    # This method reconstructs a Tournament object from a dictionary — typically loaded from a JSON file
+    # The decorator allows the method to create a new instance of the class...
+    # ...using the class itself (cls) rather than a hardcoded class name.
+    @classmethod
     def from_dict(cls, data):
         dates = Dates(data["dates"]["start"], data["dates"]["end"])
         tournament = cls(

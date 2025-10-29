@@ -1,2 +1,2 @@
-from .create import ClubCreate
-from .view import ClubView
+# from .create import ClubCreate
+# from .view import ClubView
