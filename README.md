@@ -1,6 +1,6 @@
 # Chess Tournament Manager - OpenClassrooms WPS | P3
 
-This repository contains the completed offline tournament management application developed for Cornville, Springfield, and other regional clubs. The program is designed to run without internet access, making it ideal for venues with limited connectivity.
+This repository contains the completed offline tournament management application developed for Castle Chess and other regional clubs. The program is designed to run without internet access, making it ideal for venues with limited connectivity.
 
 ### Features
 
