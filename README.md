@@ -30,7 +30,7 @@ This repository contains the completed offline tournament management application
 
 1. Clone the repository
 
-https://github.com/OpenClassrooms-Student-Center/P3-Application-Developer-Skills-Bootcamp.git
+https://github.com/vingonzal/Develop-a-Software-Program-Using-Python.git
 
 2. 	Create a virtual environment
 
