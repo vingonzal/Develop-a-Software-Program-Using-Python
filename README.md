@@ -24,6 +24,7 @@ This repository contains the completed offline tournament management application
 | controllers/ | Main application logic and flow control                                  |
 | .flake8      | Configuration for linting rules                                          |
 
+*note, this program does not use the Screens or Commands folders from the starter code. 
 
 ### Installation & Setup
 
